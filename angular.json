@@ -13,18 +13,16 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/dummy-app",
+            "outputPath": "dist/dummy-app/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
-            "tsConfig": "tsconfig.server.json",
+            "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
               "src/styles.css"
@@ -33,6 +31,10 @@
           },
           "configurations": {
             "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "namedChunks": false,
+              "extractLicenses": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -44,8 +46,7 @@
                   "maximumWarning": "2kB",
                   "maximumError": "4kB"
                 }
-              ],
-              "outputHashing": "all"
+              ]
             },
             "development": {
               "optimization": false,
@@ -58,9 +59,21 @@
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
-            "outputPath": "dist/dummy-app-server",
+            "outputPath": "dist/dummy-app/server",
             "main": "src/main.server.ts",
             "tsConfig": "tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "none",
+              "namedChunks": false,
+              "extractLicenses": true
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true
+            }
           }
         },
         "serve": {
@@ -71,6 +84,24 @@
             },
             "development": {
               "buildTarget": "dummy-app:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "serve:ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "options": {
+            "browserTarget": "dummy-app:build",
+            "serverTarget": "dummy-app:server"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "dummy-app:build:production",
+              "serverTarget": "dummy-app:server:production"
+            },
+            "development": {
+              "browserTarget": "dummy-app:build:development",
+              "serverTarget": "dummy-app:server:development"
             }
           },
           "defaultConfiguration": "development"
@@ -87,10 +118,8 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
               "src/styles.css"

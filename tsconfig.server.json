@@ -1,20 +1,18 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist/out-tsc-server",  // Output directory for SSR build
+    "outDir": "./dist/server",
+    "module": "commonjs",
+    "target": "es2019",
     "types": [
       "node"
     ]
   },
   "files": [
-    "src/main.server.ts",     // Main entry point for SSR app (server-side)
+    "src/main.server.ts",
     "src/app/app.config.server.ts"
   ],
   "include": [
-  "src/**/*.ts"
-],
-"exclude": [
-  "src/test.ts",
-  "**/*.spec.ts"
-]
+    "src/**/*.d.ts"
+  ]
 }
